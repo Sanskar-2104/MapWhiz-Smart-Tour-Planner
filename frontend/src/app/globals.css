@@ -24,3 +24,124 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+
+/* For buttons */
+.light_skew_hover{
+  position: relative;
+  height: 100%;
+  display: inline-block;
+  width: 200px;
+  height: 62px;
+  border: 0.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  backdrop-filter: blur(30px);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.light_skew_hover::before{
+  background-image: linear-gradient(90deg, transparent, #00BAD4, transparent);
+  content: '';
+  left: 150%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  transform: skew(-20deg);
+  width: 200%;
+  animation: shine2 4s cubic-bezier(0.1, .56, 1, 1) infinite;
+  opacity: 0.7;
+}
+
+.light_skew_hover::after{
+  background-image: linear-gradient(90deg, transparent, #00BAD4, transparent);
+  content: '';
+  left: 150%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  transform: skew(-20deg);
+  width: 200%;
+  animation: shine2 4s cubic-bezier(0.1, .56, 1, 1) infinite;
+  opacity: 0.7;
+}
+
+@keyframes shine2 {
+  20% {
+    left: -200%;
+  }
+  100% {
+    left: -200%;
+  }
+}
+
+.effect-parent{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.effect-parent span{
+  position: absolute;
+  width: 60px;
+  height: 70px;
+  background: linear-gradient(45deg, rgba(255, 0, 150, 0.8), rgba(0, 204, 255, 0.8));
+  border-radius: 50%;
+  animation: moveBall 4s infinite alternate;
+  opacity: 0.4;
+  filter: blur(10px);
+}
+
+.effect-parent span:nth-child(1){
+  background: linear-gradient(80.57deg, #5128E3 10.86%, #AA3BF2 89.96%);
+  animation-delay: 0s;
+  left: 0;
+}
+
+.effect-parent span:nth-child(2){
+  background: linear-gradient(99.68deg, #5128E3 7.72%, #AA3BF2 118.76%);
+  animation-delay: 1s;
+  left: 0;
+}
+
+.effect-parent span:nth-child(3){
+  background: linear-gradient(80.57deg, #5128E3 10.86%, #AA3BF2 89.96%);
+  animation-delay: 2s;
+  left: 0;
+}
+
+@keyframes moveBall {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(140px);
+  }
+}
+
+.light_skew{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 10px 20px;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  text-decoration: none;
+  background-color: transparent;
+  z-index: 1;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.cta_text{
+  position: relative;
+  z-index: 1;
+}
