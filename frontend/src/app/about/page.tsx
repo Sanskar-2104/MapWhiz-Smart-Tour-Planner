@@ -43,7 +43,7 @@ export default function About() {
             About Smart Tour Planner
           </h1>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-            We're revolutionizing the way people plan and experience travel through innovative technology 
+            We're revolutionizing the way people plan and experience travel through innovative technology
             and personalized recommendations that turn every journey into an unforgettable adventure.
           </p>
         </div>
@@ -55,9 +55,9 @@ export default function About() {
               Transforming Travel, One Journey at a Time
             </h2>
             <p className="text-lg text-slate-300 leading-relaxed mb-8">
-              At Smart Tour Planner, we believe that every trip should be extraordinary. Our platform combines 
-              cutting-edge artificial intelligence with deep travel expertise to create personalized itineraries 
-              that reflect your unique interests, budget, and travel style. Whether you're planning a weekend 
+              At Smart Tour Planner, we believe that every trip should be extraordinary. Our platform combines
+              cutting-edge artificial intelligence with deep travel expertise to create personalized itineraries
+              that reflect your unique interests, budget, and travel style. Whether you're planning a weekend
               getaway or a month-long adventure, we're here to make your travel dreams a reality.
             </p>
             <div className="flex flex-wrap justify-center gap-8 text-slate-300">
@@ -138,7 +138,7 @@ export default function About() {
             Ready to Start Your Next Adventure?
           </h2>
           <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
-            Join thousands of travelers who have already discovered the joy of stress-free trip planning 
+            Join thousands of travelers who have already discovered the joy of stress-free trip planning
             with Smart Tour Planner.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

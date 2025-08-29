@@ -140,7 +140,7 @@ const Dashboard = () => {
             <div className="absolute -top-1 -right-1 w-3 h-3 bg-destructive rounded-full animate-pulse"></div>
           </Button>
           <div className="w-12 h-12 rounded-full travel-gradient-warm p-[2px] hover-lift cursor-pointer">
-            <img 
+            <img
               src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=48&h=48&fit=crop&crop=face"
               alt="User"
               className="w-full h-full rounded-full object-cover"
@@ -162,11 +162,11 @@ const Dashboard = () => {
                   <span>2 trips planned</span>
                 </div>
               </div>
-              
+
               <Card className="glass-effect border-border/30 overflow-hidden hover-lift group">
                 <div className="flex flex-col md:flex-row">
                   <div className="w-full md:w-64 h-48 md:h-40 relative overflow-hidden">
-                    <img 
+                    <img
                       src="https://images.unsplash.com/photo-1554797589-7241bb691973?w=400&h=300&fit=crop"
                       alt="Cherry blossom Seoul"
                       className="w-full h-full object-cover group-hover:scale-105 travel-transition"
@@ -199,7 +199,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <p className="text-muted-foreground mb-4 line-clamp-2">
-                          Experience Korea's magical spring season with breathtaking cherry blossoms, 
+                          Experience Korea's magical spring season with breathtaking cherry blossoms,
                           traditional temples, and vibrant street markets in the heart of Seoul.
                         </p>
                         <div className="flex items-center gap-4 mb-6">
@@ -233,22 +233,22 @@ const Dashboard = () => {
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold">Curated For You</h2>
                 <div className="flex items-center gap-2">
-                  <Button 
-                    variant={activeTab === 'all' ? 'travel' : 'travel-glass'} 
+                  <Button
+                    variant={activeTab === 'all' ? 'travel' : 'travel-glass'}
                     size="sm"
                     onClick={() => setActiveTab('all')}
                   >
                     All
                   </Button>
-                  <Button 
-                    variant={activeTab === 'popular' ? 'travel' : 'travel-glass'} 
+                  <Button
+                    variant={activeTab === 'popular' ? 'travel' : 'travel-glass'}
                     size="sm"
                     onClick={() => setActiveTab('popular')}
                   >
                     Popular
                   </Button>
-                  <Button 
-                    variant={activeTab === 'trending' ? 'travel' : 'travel-glass'} 
+                  <Button
+                    variant={activeTab === 'trending' ? 'travel' : 'travel-glass'}
                     size="sm"
                     onClick={() => setActiveTab('trending')}
                   >
@@ -256,13 +256,13 @@ const Dashboard = () => {
                   </Button>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {tripPlans.map((trip) => (
                   <Card key={trip.id} className="glass-effect border-border/30 overflow-hidden hover-lift group cursor-pointer">
                     <div className="relative">
                       <div className="h-48 overflow-hidden">
-                        <img 
+                        <img
                           src={trip.image}
                           alt={trip.title}
                           className="w-full h-full object-cover group-hover:scale-110 travel-transition"
@@ -270,9 +270,9 @@ const Dashboard = () => {
                       </div>
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                       <div className="absolute top-3 right-3">
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           className="text-white hover:bg-white/20"
                           onClick={(e) => {
                             e.stopPropagation();
@@ -317,7 +317,7 @@ const Dashboard = () => {
               <h2 className="text-2xl font-bold mb-6">Trending Destinations</h2>
               <Card className="glass-effect border-border/30 overflow-hidden hover-lift group">
                 <div className="relative h-64 overflow-hidden">
-                  <img 
+                  <img
                     src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&h=300&fit=crop"
                     alt="Bali WildLife Sanctuary"
                     className="w-full h-full object-cover group-hover:scale-105 travel-transition"
@@ -346,7 +346,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <p className="text-muted-foreground mb-4">
-                        Immerse yourself in Bali's incredible biodiversity with guided wildlife tours, 
+                        Immerse yourself in Bali's incredible biodiversity with guided wildlife tours,
                         traditional village visits, and unforgettable nature experiences.
                       </p>
                     </div>
@@ -393,7 +393,7 @@ const Dashboard = () => {
                   </Button>
                 </div>
               </div>
-              
+
               <div className="mb-4">
                 <div className="text-xs font-medium text-muted-foreground mb-3">TRAVEL ACTIVITY</div>
               </div>
@@ -407,14 +407,13 @@ const Dashboard = () => {
               <div className="grid grid-cols-7 gap-1">
                 {daysInMonth.map((day, index) => (
                   <button
-                    key={index} 
-                    className={`h-10 flex items-center justify-center text-sm rounded-lg travel-transition ${
-                      day.active 
-                        ? 'travel-gradient-primary text-white shadow-lg scale-105' 
-                        : day.day 
-                          ? 'text-foreground hover:bg-accent hover:scale-105 cursor-pointer' 
-                          : 'cursor-default'
-                    }`}
+                    key={index}
+                    className={`h-10 flex items-center justify-center text-sm rounded-lg travel-transition ${day.active
+                      ? 'travel-gradient-primary text-white shadow-lg scale-105'
+                      : day.day
+                        ? 'text-foreground hover:bg-accent hover:scale-105 cursor-pointer'
+                        : 'cursor-default'
+                      }`}
                     onClick={() => day.day && setSelectedDate(parseInt(day.day))}
                   >
                     {day.day}
@@ -431,7 +430,7 @@ const Dashboard = () => {
                   View All
                 </Button>
               </div>
-              
+
               <div className="space-y-4">
                 {doneTrips.map((trip) => {
                   const IconComponent = trip.icon;

@@ -44,7 +44,7 @@
 }
 
 /* For buttons */
-.light_skew_hover{
+.light_skew_hover {
   position: relative;
   height: 100%;
   display: inline-block;
@@ -57,7 +57,7 @@
   cursor: pointer;
 }
 
-.light_skew_hover::before{
+.light_skew_hover::before {
   background-image: linear-gradient(90deg, transparent, #00BAD4, transparent);
   content: '';
   left: 150%;
@@ -70,7 +70,7 @@
   opacity: 0.7;
 }
 
-.light_skew_hover::after{
+.light_skew_hover::after {
   background-image: linear-gradient(90deg, transparent, #00BAD4, transparent);
   content: '';
   left: 150%;
@@ -87,12 +87,13 @@
   20% {
     left: -200%;
   }
+
   100% {
     left: -200%;
   }
 }
 
-.effect-parent{
+.effect-parent {
   position: absolute;
   top: 0;
   left: 0;
@@ -101,7 +102,7 @@
   pointer-events: none;
 }
 
-.effect-parent span{
+.effect-parent span {
   position: absolute;
   width: 60px;
   height: 70px;
@@ -112,19 +113,19 @@
   filter: blur(10px);
 }
 
-.effect-parent span:nth-child(1){
+.effect-parent span:nth-child(1) {
   background: linear-gradient(80.57deg, #5128E3 10.86%, #AA3BF2 89.96%);
   animation-delay: 0s;
   left: 0;
 }
 
-.effect-parent span:nth-child(2){
+.effect-parent span:nth-child(2) {
   background: linear-gradient(99.68deg, #5128E3 7.72%, #AA3BF2 118.76%);
   animation-delay: 1s;
   left: 0;
 }
 
-.effect-parent span:nth-child(3){
+.effect-parent span:nth-child(3) {
   background: linear-gradient(80.57deg, #5128E3 10.86%, #AA3BF2 89.96%);
   animation-delay: 2s;
   left: 0;
@@ -140,7 +141,7 @@
   }
 }
 
-.light_skew{
+.light_skew {
   position: relative;
   display: flex;
   align-items: center;
@@ -157,11 +158,12 @@
   font-weight: 500;
 }
 
-.cta_text{
+.cta_text {
   position: relative;
   z-index: 1;
-} 
-/* Button end */ 
+}
+
+/* Button end */
 
 :root {
   --radius: 0.625rem;
@@ -196,7 +198,7 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
-} 
+}
 
 .dark {
   --background: oklch(0.129 0.042 264.695);
@@ -230,19 +232,20 @@
   --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.551 0.027 264.364);
-} 
+}
 
-@layer base {
+/* @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
-}
+} */
 
 
-@layer base {
+/* @layer base {
   :root {
     --background: 218 23% 6%;
     --foreground: 210 40% 98%;
@@ -274,7 +277,7 @@
 
     --radius: 0.75rem;
 
-    /* Travel-specific design tokens */
+    /* Travel-specific design tokens 
     --travel-gradient-primary: linear-gradient(135deg, hsl(191 100% 50%), hsl(267 84% 81%));
     --travel-gradient-warm: linear-gradient(135deg, hsl(25 95% 53%), hsl(340 82% 52%));
     --travel-gradient-cool: linear-gradient(135deg, hsl(191 100% 50%), hsl(230 89% 65%));
@@ -297,6 +300,19 @@
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--gradient-accent-via) / 0.35);
+    --shadow-glow: 0 0 40px hsl(var(--gradient-accent-from) / 0.35);
+
+    --gradient-accent-from: 199 89% 55%; /* blue-cyan 
+    --gradient-accent-via: 259 84% 67%; /* purple 
+    --gradient-accent-to: 164 72% 45%; /* teal 
+
+    --font-sans: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+      Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+      "Segoe UI Emoji";
+    --font-heading: "Poppins", var(--font-sans);
   }
 
   .dark {
@@ -327,6 +343,7 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -336,55 +353,72 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-}
+} */
 
-@layer base {
-  * {
-    @apply border-border;
-  }
 
-  body {
-    @apply bg-background text-foreground;
-  }
-}
+
 
 @layer components {
   .travel-gradient-primary {
     background: var(--travel-gradient-primary);
   }
-  
+
   .travel-gradient-warm {
     background: var(--travel-gradient-warm);
   }
-  
+
   .travel-gradient-cool {
     background: var(--travel-gradient-cool);
   }
-  
+
   .travel-glow {
     box-shadow: var(--travel-glow);
   }
-  
+
   .travel-shadow {
     box-shadow: var(--travel-shadow-soft);
   }
-  
+
   .travel-transition {
     transition: var(--travel-transition);
   }
-  
+
   .glass-effect {
     background: hsl(var(--card) / 0.8);
     backdrop-filter: blur(12px);
     border: 1px solid hsl(var(--border) / 0.5);
   }
-  
+
   .hover-lift {
     transition: var(--travel-transition);
   }
-  
+
   .hover-lift:hover {
     transform: translateY(-4px);
     box-shadow: var(--travel-shadow-soft);
   }
 }
+
+/* @layer components {
+  .bg-hero {
+    background: radial-gradient(100% 100% at 0% 0%, hsl(var(--hero-to)) 0%, hsl(var(--hero-from)) 100%);
+  }
+  .text-gradient {
+    background-image: linear-gradient(90deg, hsl(var(--gradient-accent-from)), hsl(var(--gradient-accent-via)), hsl(var(--gradient-accent-to)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .bg-gradient-accent {
+    background-image: linear-gradient(135deg, hsl(var(--gradient-accent-from)), hsl(var(--gradient-accent-via)), hsl(var(--gradient-accent-to)));
+  }
+  .shadow-elegant { box-shadow: var(--shadow-elegant); }
+  .shadow-glow { box-shadow: var(--shadow-glow); }
+  .font-heading { font-family: var(--font-heading); }
+}
+
+@layer components {
+  .btn-gradient {
+    @apply bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:opacity-90;
+  }
+} */
