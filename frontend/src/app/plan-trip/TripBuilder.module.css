@@ -67,7 +67,7 @@
     100% 100% at 0% 0%,
     hsl(var(--hero-to)) 0%,
     hsl(var(--hero-from)) 100%
-  ); 
+  );  
   color: hsl(var(--foreground));
   min-height: 100vh;
   font-family: var(--font-sans); 
@@ -86,6 +86,15 @@
 } */
 
 /* Utilities (scoped) */
+/* In TripBuilder.module.css (or globals if you want everywhere) */
+/* .bgHero {
+  background: radial-gradient(
+    100% 100% at 0% 0%,
+    hsl(var(--hero-to)) 0%,
+    hsl(var(--hero-from)) 100%
+  );
+} */
+
 .textGradient {
   background-image: linear-gradient(
     90deg,
@@ -117,6 +126,7 @@
 
 .fontHeading {
   font-family: var(--font-heading);
+  font-weight: 900;
 }
 
 
@@ -161,7 +171,31 @@
   opacity: 0.9;
 }
 
+/* Custom Card */
+.card {
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  border: 1px solid hsl(var(--border) / 0.6);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-elegant, 0 10px 30px -10px rgba(0, 0, 0, 0.4));
+}
 
+.cardHeader {
+  margin-bottom: 1rem;
+}
+
+.cardTitle {
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
 
 
 
