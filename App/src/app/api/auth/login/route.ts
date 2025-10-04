@@ -1,10 +1,31 @@
 import { NextResponse, NextRequest } from "next/server";
 import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
-import jwt from "jsonwebtoken";
+import { signToken } from "@/lib/jwt";
+import { rateLimit } from "@/lib/rateLimit";
+
+const limiter = rateLimit({
+    interval: 60 * 1000, // 1 minute
+    uniqueTokenPerInterval: 500, // Max 500 users per minute
+    maxInInterval: 10, // Max 10 requests per minute
+});
 
 
 export async function POST(request: NextRequest) { 
+
+    const ip = request.headers.get("x-forwarded-for") || "127.0.0.1";
+
+    try {
+        // 5 requests per IP per minute
+        await limiter.check(ip, 10);
+    } catch {
+        return NextResponse.json({
+            error: "Too many requests, try again later."
+        }, {
+            status: 429
+        });
+    }
+
     try { 
         const { email, password } = await request.json();
         console.log("Email:", email, "Password:", password);
@@ -30,10 +51,10 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ message: "Invalid password" }, { status: 401 });
         } 
 
-        const token = jwt.sign({
+        const token = signToken({
             id: existingUser.id,
             email: existingUser.email
-        }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+        });
 
         const response = NextResponse.json({
             message: "Login successful",
