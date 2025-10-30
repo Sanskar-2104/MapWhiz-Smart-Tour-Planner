@@ -358,7 +358,7 @@
 
 
 
-@layer components {
+/* @layer components {
   .travel-gradient-primary {
     background: var(--travel-gradient-primary);
   }
@@ -397,7 +397,7 @@
     transform: translateY(-4px);
     box-shadow: var(--travel-shadow-soft);
   }
-}
+} */
 
 /* @layer components {
   .bg-hero {

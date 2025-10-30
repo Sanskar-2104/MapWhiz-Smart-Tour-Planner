@@ -1,0 +1,56 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { useState } from "react";
+
+export default function LoginForm() {
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => setLoading(false), 1500);
+  };
+
+  return (
+    <motion.form
+      onSubmit={handleLogin}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: 0.8, duration: 0.6 }}
+      className="bg-white/10 backdrop-blur-md rounded-2xl px-8 py-10 w-[90%] max-w-md border border-[#d8cfc4]/30 shadow-[0_0_25px_rgba(255,255,255,0.05)]"
+    >
+      <div className="flex flex-col space-y-5">
+        <input
+          type="email"
+          placeholder="Email"
+          required
+          className="bg-transparent border-b-2 border-[#d8cfc4]/40 focus:border-[#f4e9d8] text-white placeholder-gray-400 outline-none py-3 transition-all duration-300"
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          required
+          className="bg-transparent border-b-2 border-[#d8cfc4]/40 focus:border-[#f4e9d8] text-white placeholder-gray-400 outline-none py-3 transition-all duration-300"
+        />
+        <motion.button
+          type="submit"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.97 }}
+          className="mt-4 bg-[#f4e9d8] text-[#0d2535] font-semibold py-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+        >
+          {loading ? "Calculating Route..." : "Login"}
+        </motion.button>
+      </div>
+
+      <div className="mt-6 flex justify-between text-sm text-gray-300">
+        <a href="#" className="hover:text-[#f4e9d8] transition-colors">
+          Forgot Password?
+        </a>
+        <a href="#" className="hover:text-[#f4e9d8] transition-colors">
+          Sign Up
+        </a>
+      </div>
+    </motion.form>
+  );
+}
