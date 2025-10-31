@@ -1,15 +1,33 @@
 "use client";
 
+
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { login } from "@/lib/authApi";
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
     setTimeout(() => setLoading(false), 1500);
+
+    try { 
+      const response = await login({
+        email,
+        password
+      });
+
+      if (response.token) {
+        console.log("Login successful, token:", response.token);
+      }
+    }catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (
@@ -26,12 +44,16 @@ export default function LoginForm() {
           placeholder="Email"
           required
           className="bg-transparent border-b-2 border-[#d8cfc4]/40 focus:border-[#f4e9d8] text-white placeholder-gray-400 outline-none py-3 transition-all duration-300"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}  
         />
         <input
           type="password"
           placeholder="Password"
           required
           className="bg-transparent border-b-2 border-[#d8cfc4]/40 focus:border-[#f4e9d8] text-white placeholder-gray-400 outline-none py-3 transition-all duration-300"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <motion.button
           type="submit"
