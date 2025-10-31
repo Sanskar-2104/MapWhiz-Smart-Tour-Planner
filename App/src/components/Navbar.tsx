@@ -34,14 +34,14 @@ export default function Navbar() {
             <Link href="/about" className="text-slate-300 hover:text-white transition-colors">
               About Us
             </Link>
-            <Link href="/login" className="gradient-primary text-white px-4 py-2 rounded-2xl hover:shadow-lg transition-all duration-300">
-              Login
+            <Link href="/booking-info" className="gradient-primary text-white px-4 py-2 rounded-2xl hover:shadow-lg transition-all duration-300">
+              Booking Info
             </Link>
             <div className="light_skew_hover">
               <div className="effect-parent">
                 <span></span><span></span><span></span>
               </div>
-              <a href="/" target="_blank" className="light_skew">
+              <a href="/login" target="_blank" className="light_skew">
                 <span className="cta_text">
                   Login/Sign up
                 </span>
