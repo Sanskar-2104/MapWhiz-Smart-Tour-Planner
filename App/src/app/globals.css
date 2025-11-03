@@ -422,3 +422,31 @@
     @apply bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:opacity-90;
   }
 } */
+
+
+/* ==== Custom Scrollbar ==== */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* transparent background */
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #192841, #813FA7);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #1f3a58, #9157d4);
+}
+
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #192841, #813FA7);
+  border-radius: 20px;
+}
