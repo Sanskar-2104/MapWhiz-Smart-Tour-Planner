@@ -3,6 +3,10 @@
 //   // (Pseudo-Logic or AI Call)
 //   // Here you can call Gemini/OpenAI API or use your own place-suggestion logic.
 
+import { enrichPOIsWithGemini } from "./geminiTripHelper";
+import { fetchPlaces, geocodePlace } from "./placesProvider";
+import prisma from "./prisma";
+
 //     const days = [
 //         {
 //         date: startDate,
@@ -32,17 +36,52 @@ export async function generateItinerary(input: PlannerInput) {
     // 4) Parse and return
 
     // Example simple stub (replace with real LLM call)
-    const days = [
-        {
-        date: input.startDate,
-        notes: 'Arrival and light sightseeing',
-        attractions: [
-            { name: 'Old City', description: 'Historic walk', lat: 26.9, lng: 75.8, startTime: '09:00', endTime: '11:00' }
-        ]
-        },
-        // ...
-    ];
 
-    return days;
+    const { destination, startDate, endDate, interests = [], days } = input;
+
+  // check cache first
+    const cached = await prisma.cityCache.findUnique({ where: { destination } });
+    if (cached) {
+        try {
+        const parsed = JSON.parse(cached.data);
+        return parsed;
+        } catch {
+        // continue to regenerate
+        }
+    }
+
+    // 1) geocode
+    const geo = await geocodePlace(destination);
+    if (!geo?.lat || !geo?.lng) {
+        throw new Error("Unable to geocode destination");
+    }
+
+    // 2) fetch POIs
+    const pois = await fetchPlaces(geo.lat, geo.lng, interests, 40);
+
+    // 3) enrich with Gemini
+    const enriched = await enrichPOIsWithGemini(pois, destination, days ?? null);
+
+    // 4) cache to DB (stringified)
+    await prisma.cityCache.upsert({
+        where: { destination },
+        update: { data: JSON.stringify(enriched) },
+        create: { destination, data: JSON.stringify(enriched) },
+    });
+
+    return enriched;
+    // const days = [
+    //     {
+    //     date: input.startDate,
+    //     notes: 'Arrival and light sightseeing',
+    //     attractions: [
+    //         { name: 'Old City', description: 'Historic walk', lat: 26.9, lng: 75.8, startTime: '09:00', endTime: '11:00' }
+    //     ]
+    //     },
+    //     // ...
+    // ];
+
+    // return days;
+
 }
 
