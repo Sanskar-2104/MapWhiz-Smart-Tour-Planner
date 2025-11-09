@@ -1,6 +1,11 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 const SECRET = process.env.JWT_SECRET || "supersecret";
+
+export interface AuthPayload extends JwtPayload {
+    userId: string
+    email?: string
+}
 
 export function signToken(payload: object) {
     return jwt.sign(payload, SECRET, { expiresIn: "1h" });
@@ -8,7 +13,10 @@ export function signToken(payload: object) {
 
 export function verifyToken(token: string) {
     try {
-        return jwt.verify(token, SECRET);
+        const decoded = jwt.verify(token, SECRET)
+    // ensure it's an object and has userId
+    if (typeof decoded === 'string' || !('userId' in decoded)) return null
+    return decoded as AuthPayload
     } catch {
         return null;
     }

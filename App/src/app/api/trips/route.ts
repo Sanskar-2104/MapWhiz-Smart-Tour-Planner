@@ -1,49 +1,112 @@
 // src/app/api/trips/route.ts
-import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import { generateTripPlan } from "@/lib/aiTripPlanner";
+// import { NextResponse } from "next/server";
+// import prisma from "@/lib/prisma";
+// import { generateTripPlan } from "@/lib/aiTripPlanner";
+
+// export async function POST(req: Request) {
+//     try {
+//         const { userId, destination, startDate, endDate, interests } = await req.json();
+
+//         // Call AI/Logic to generate day-wise plan
+//         const tripPlan = await generateTripPlan(destination, startDate, endDate, interests);
+
+//         const newTrip = await prisma.trip.create({
+//         data: {
+//             userId,
+//             destination,
+//             startDate: new Date(startDate),
+//             endDate: new Date(endDate),
+//             interests,
+//             aiGenerated: true,
+//             days: {
+//             create: tripPlan.days.map((day: any, index: number) => ({
+//                 dayNumber: index + 1,
+//                 date: new Date(day.date),
+//                 routes: day.routes,
+//                 places: {
+//                 create: day.places.map((p: any) => ({
+//                     name: p.name,
+//                     category: p.category,
+//                     address: p.address,
+//                     description: p.description,
+//                     latitude: p.latitude,
+//                     longitude: p.longitude,
+//                     rating: p.rating,
+//                     timeSlot: p.timeSlot,
+//                 })),
+//                 },
+//             })),
+//             },
+//         },
+//         include: { days: { include: { places: true } } },
+//         });
+
+//         return NextResponse.json(newTrip);
+//     } catch (error: any) {
+//         console.error(error);
+//         return NextResponse.json({ error: "Failed to create trip" }, { status: 500 });
+//     }
+// }
+
+
+
+import { NextResponse } from 'next/server';
+import { getUserFromReq } from '@/lib/authApi'; // your existing auth helper
+import prisma from '@/lib/prisma';
+import { generateItinerary } from '@/lib/aiTripPlanner';
 
 export async function POST(req: Request) {
-    try {
-        const { userId, destination, startDate, endDate, interests } = await req.json();
+    const user = await getUserFromReq(req);
+    if (!user) return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 });
 
-        // Call AI/Logic to generate day-wise plan
-        const tripPlan = await generateTripPlan(destination, startDate, endDate, interests);
+    const body = await req.json();
+    const { title, destination, startDate, endDate, interests, budget } = body;
 
-        const newTrip = await prisma.trip.create({
+    const trip = await prisma.trip.create({
         data: {
-            userId,
-            destination,
-            startDate: new Date(startDate),
-            endDate: new Date(endDate),
-            interests,
-            aiGenerated: true,
-            days: {
-            create: tripPlan.days.map((day: any, index: number) => ({
-                dayNumber: index + 1,
-                date: new Date(day.date),
-                routes: day.routes,
-                places: {
-                create: day.places.map((p: any) => ({
-                    name: p.name,
-                    category: p.category,
-                    address: p.address,
-                    description: p.description,
-                    latitude: p.latitude,
-                    longitude: p.longitude,
-                    rating: p.rating,
-                    timeSlot: p.timeSlot,
-                })),
-                },
-            })),
-            },
+        ownerId: user.id,
+        title,
+        destination,
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+        interests,
+        budget,
         },
-        include: { days: { include: { places: true } } },
-        });
+    });
 
-        return NextResponse.json(newTrip);
-    } catch (error: any) {
-        console.error(error);
-        return NextResponse.json({ error: "Failed to create trip" }, { status: 500 });
+    // Call AI planner to get day-wise plan
+    try {
+        const dayPlans = await generateItinerary({ destination, startDate, endDate, interests, budget });
+
+        // Save DayPlans + Attraction
+        for (let i = 0; i < dayPlans.length; i++) {
+        const day = dayPlans[i];
+        const createdDay = await prisma.dailyPlan.create({
+            data: {
+            tripId: trip.id,
+            dayIndex: i + 1,
+            date: day.date ? new Date(day.date) : null,
+            notes: day.notes ?? '',
+            attractions: { create: day.attractions.map((a: any, idx: number) => ({
+                name: a.name,
+                description: a.description ?? '',
+                category: a.category ?? 'General',
+                address: a.address ?? '',
+                latitude: a.lat ?? null,
+                longitude: a.lng ?? null,
+                startTime: a.startTime ?? null,
+                endTime: a.endTime ?? null,
+                order: idx,
+            })) }
+            },
+            include: { attractions: true }
+        });
+        }
+
+        return NextResponse.json({ tripId: trip.id, publicId: trip.publicId });
+    } catch (err) {
+        console.error(err);
+        return NextResponse.json({ error: 'AI generation failed' }, { status: 500 });
     }
 }
+
