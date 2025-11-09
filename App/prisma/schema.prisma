@@ -21,28 +21,44 @@ model User {
 }
 
 model Trip {
-  id            String   @id @default(uuid())
-  pyblicId     String   @unique @default(uuid())
-  user          User     @relation(fields: [userId], references: [id])
-  userId        String
+  id            String    @id @default(cuid())
+  publicId      String    @unique @default(uuid())          // for sharing without exposing DB id
+  ownerId       String
+  owner         User      @relation(fields: [ownerId], references: [id])
+  title         String
   destination   String
   startDate     DateTime
   endDate       DateTime
-  interests     String[]
-  aiGenerated   Boolean  @default(true)
+  interests     String[]   // e.g. ["trekking","food"]
+  budget        Int?
+  status        String    @default("generated") // draft | generated | published
   days          DailyPlan[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  isPublic      Boolean   @default(false)
+  sharedCount   Int       @default(0)
 }
 
+
 model DailyPlan {
-  id        String     @id @default(uuid())
-  trip      Trip       @relation(fields: [tripId], references: [id])
-  tripId    String
-  dayNumber Int
-  date      DateTime
-  routes    Json       // efficient route (ordered array of places)
-  places    Place[]    // each day's list of places
+  // id        String     @id @default(uuid())
+  // trip      Trip       @relation(fields: [tripId], references: [id])
+  // tripId    String
+  // dayNumber Int
+  // date      DateTime
+  // routes    Json       // efficient route (ordered array of places)
+  // places    Place[]    // each day's list of places
+
+
+  id         String      @id @default(cuid())
+  tripId     String
+  trip       Trip        @relation(fields: [tripId], references: [id])
+  dayIndex   Int         // 1,2,3...
+  date       DateTime?
+  attractions Place[]
+  notes      String?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 }
 
 model Place {
@@ -57,5 +73,8 @@ model Place {
   longitude   Float
   rating      Float?
   timeSlot    String?  // Morning, Afternoon, Evening
+  startTime  String?   // "09:30"
+  endTime    String?
+  order      Int 
   createdAt   DateTime @default(now())
 }
