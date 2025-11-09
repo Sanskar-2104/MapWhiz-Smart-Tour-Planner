@@ -1,7 +1,7 @@
 import client from "./geminiClient";
 import { z } from "zod";
 
-const AttractionSchema = z.object({
+const placeSchema = z.object({
     name: z.string(),
     description: z.string().nullable().optional(),
     lat: z.number().nullable().optional(),
@@ -13,7 +13,7 @@ const AttractionSchema = z.object({
 const DaySchema = z.object({
     date: z.string().nullable().optional(),
     notes: z.string().nullable().optional(),
-    attractions: z.array(AttractionSchema),
+    places: z.array(placeSchema),
 });
 
 const ResponseSchema = z.object({
@@ -23,7 +23,7 @@ const ResponseSchema = z.object({
 type POI = { name: string; description?: string | null; latitude?: number | null; longitude?: number | null };
 
 export async function enrichPOIsWithGemini(pois: POI[], destination: string, daysHint?: number) {
-    const prompt = `You are a travel assistant. Given a list of verified POIs (name, lat, lng), produce a ${daysHint ?? "day-by-day"} itinerary for ${destination}. Return JSON with top-level "days": [{ "date": "YYYY-MM-DD" (optional), "notes": "...", "attractions": [{name, description, lat, lng, startTime (optional), endTime (optional)}]}]. Use the provided POI list. If lat/lng is missing for a POI, set it to null. Return JSON only.`;
+    const prompt = `You are a travel assistant. Given a list of verified POIs (name, lat, lng), produce a ${daysHint ?? "day-by-day"} itinerary for ${destination}. Return JSON with top-level "days": [{ "date": "YYYY-MM-DD" (optional), "notes": "...", "places": [{name, description, lat, lng, startTime (optional), endTime (optional)}]}]. Use the provided POI list. If lat/lng is missing for a POI, set it to null. Return JSON only.`;
 
     // Build a simple JSON schema for the request
     const responseSchema = {
@@ -36,7 +36,7 @@ export async function enrichPOIsWithGemini(pois: POI[], destination: string, day
             properties: {
                 date: { type: ["string", "null"] },
                 notes: { type: ["string", "null"] },
-                attractions: {
+                places: {
                 type: "array",
                 items: {
                     type: "object",
@@ -53,7 +53,7 @@ export async function enrichPOIsWithGemini(pois: POI[], destination: string, day
                 },
                 },
             },
-            required: ["attractions"],
+            required: ["places"],
             additionalProperties: false,
             },
         },
@@ -99,7 +99,7 @@ export async function enrichPOIsWithGemini(pois: POI[], destination: string, day
         return validated.data.days.map((d: any) => ({
         date: d.date ?? null,
         notes: d.notes ?? null,
-        attractions: (d.attractions ?? []).map((a: any) => ({
+        places: (d.places ?? []).map((a: any) => ({
             name: a.name,
             description: a.description ?? null,
             lat: typeof a.lat === "number" ? a.lat : null,

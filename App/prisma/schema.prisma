@@ -55,7 +55,7 @@ model DailyPlan {
   trip       Trip        @relation(fields: [tripId], references: [id])
   dayIndex   Int         // 1,2,3...
   date       DateTime?
-  attractions Place[]
+  places     Place[]
   notes      String?
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
@@ -63,7 +63,7 @@ model DailyPlan {
 
 model Place {
   id          String   @id @default(uuid())
-  dailyPlan     DailyPlan  @relation(fields: [dailyPlanId], references: [id])
+  dailyPlan   DailyPlan  @relation(fields: [dailyPlanId], references: [id])
   dailyPlanId String
   name        String
   category    String
@@ -75,6 +75,6 @@ model Place {
   timeSlot    String?  // Morning, Afternoon, Evening
   startTime  String?   // "09:30"
   endTime    String?
-  order      Int 
+  order      Int
   createdAt   DateTime @default(now())
 }

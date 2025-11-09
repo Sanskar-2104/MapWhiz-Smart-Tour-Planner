@@ -87,7 +87,7 @@ export async function POST(req: Request) {
             dayIndex: i + 1,
             date: day.date ? new Date(day.date) : null,
             notes: day.notes ?? '',
-            attractions: { create: day.attractions.map((a: any, idx: number) => ({
+            places: { create: day.places.map((a: any, idx: number) => ({
                 name: a.name,
                 description: a.description ?? '',
                 category: a.category ?? 'General',
@@ -99,14 +99,30 @@ export async function POST(req: Request) {
                 order: idx,
             })) }
             },
-            include: { attractions: true }
+            include: { places: true }
         });
         }
 
-        return NextResponse.json({ tripId: trip.id, publicId: trip.publicId });
+        const full = await prisma.trip.findUnique({ where: { id: trip.id }, include: { days: { include: { places: true } } } });
+        return NextResponse.json({ publicId: full?.publicId, trip: full });
+        // return NextResponse.json({ tripId: trip.id, publicId: trip.publicId });
     } catch (err) {
-        console.error(err);
-        return NextResponse.json({ error: 'AI generation failed' }, { status: 500 });
+        console.error("Trip creation error:", err);
+        // If something failed, delete created trip to avoid orphan
+        await prisma.trip.delete({ where: { id: trip.id } }).catch(() => {});
+        return NextResponse.json({ error: "Failed to generate itinerary" }, { status: 500 });
     }
 }
 
+
+export async function GET(req: Request) {
+    const user = await getUserFromReq(req);
+    if (!user) return NextResponse.json({ error: "Unauthenticated" }, { status: 401 });
+
+    const trips = await prisma.trip.findMany({
+        where: { ownerId: user.id },
+        orderBy: { updatedAt: "desc" },
+        include: { days: { include: { places: true } } },
+    });
+    return NextResponse.json(trips);
+}
