@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,62 +7,50 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
+
 model User {
-  id        String      @id @default(uuid())
+  id        String   @id @default(uuid())
   email     String   @unique
   password  String
   name      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  // For trip planner: optional fields like trips
   trips     Trip[]
 }
 
 model Trip {
-  id            String    @id @default(cuid())
-  publicId      String    @unique @default(uuid())          // for sharing without exposing DB id
-  ownerId       String
-  owner         User      @relation(fields: [ownerId], references: [id])
-  title         String
-  destination   String
-  startDate     DateTime
-  endDate       DateTime
-  interests     String[]   // e.g. ["trekking","food"]
-  budget        Int?
-  status        String    @default("generated") // draft | generated | published
-  days          DailyPlan[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  isPublic      Boolean   @default(false)
-  sharedCount   Int       @default(0)
+  id          String      @id @default(cuid())
+  destination String
+  startDate   DateTime
+  endDate     DateTime
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  interests   String[]
+  budget      Int?
+  isPublic    Boolean     @default(false)
+  userId     String
+  publicId    String      @unique @default(uuid())
+  sharedCount Int         @default(0)
+  status      String      @default("generated")
+  title       String
+  days        DailyPlan[]
+  user       User        @relation(fields: [userId], references: [id])
 }
 
-
 model DailyPlan {
-  // id        String     @id @default(uuid())
-  // trip      Trip       @relation(fields: [tripId], references: [id])
-  // tripId    String
-  // dayNumber Int
-  // date      DateTime
-  // routes    Json       // efficient route (ordered array of places)
-  // places    Place[]    // each day's list of places
-
-
-  id         String      @id @default(cuid())
-  tripId     String
-  trip       Trip        @relation(fields: [tripId], references: [id])
-  dayIndex   Int         // 1,2,3...
-  date       DateTime?
-  places     Place[]
-  notes      String?
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
+  id        String    @id @default(cuid())
+  tripId    String
+  date      DateTime?
+  createdAt DateTime  @default(now())
+  dayIndex  Int
+  notes     String?
+  updatedAt DateTime  @updatedAt
+  trip      Trip      @relation(fields: [tripId], references: [id])
+  places    Place[]
 }
 
 model Place {
-  id          String   @id @default(uuid())
-  dailyPlan   DailyPlan  @relation(fields: [dailyPlanId], references: [id])
+  id          String    @id @default(uuid())
   dailyPlanId String
   name        String
   category    String
@@ -72,9 +59,17 @@ model Place {
   latitude    Float
   longitude   Float
   rating      Float?
-  timeSlot    String?  // Morning, Afternoon, Evening
-  startTime  String?   // "09:30"
-  endTime    String?
-  order      Int
+  timeSlot    String?
+  createdAt   DateTime  @default(now())
+  endTime     String?
+  order       Int
+  startTime   String?
+  dailyPlan   DailyPlan @relation(fields: [dailyPlanId], references: [id])
+}
+
+model CityCache {
+  id          String   @id @default(cuid())
+  destination String   @unique
+  data        String
   createdAt   DateTime @default(now())
 }

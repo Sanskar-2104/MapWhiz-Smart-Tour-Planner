@@ -37,7 +37,7 @@ export async function generateItinerary(input: PlannerInput) {
 
     // Example simple stub (replace with real LLM call)
 
-    const { destination, startDate, endDate, interests = [], days } = input;
+    const { destination, startDate, endDate, interests = [],budget , days } = input;
 
   // check cache first
     const cached = await prisma.cityCache.findUnique({ where: { destination } });

@@ -64,7 +64,7 @@ export async function POST(req: Request) {
 
     const trip = await prisma.trip.create({
         data: {
-        ownerId: user.id,
+        userId: user.id,
         title,
         destination,
         startDate: new Date(startDate),
@@ -120,7 +120,7 @@ export async function GET(req: Request) {
     if (!user) return NextResponse.json({ error: "Unauthenticated" }, { status: 401 });
 
     const trips = await prisma.trip.findMany({
-        where: { ownerId: user.id },
+        where: { userId: user.id },
         orderBy: { updatedAt: "desc" },
         include: { days: { include: { places: true } } },
     });
