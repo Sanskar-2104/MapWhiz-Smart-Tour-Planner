@@ -7,7 +7,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/50 sticky top-0 z-50">
+    <nav className="glassEffect bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/50 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center space-x-2">
@@ -41,11 +41,11 @@ export default function Navbar() {
               <div className="effect-parent">
                 <span></span><span></span><span></span>
               </div>
-              <a href="/login" target="_blank" className="light_skew">
+              <Link href="/login" className="light_skew">
                 <span className="cta_text">
                   Login/Sign up
                 </span>
-              </a>
+              </Link>
             </div>
           </div>
 
