@@ -12,17 +12,30 @@ type POI = {
     address?: string | null;
 };
 
-export async function geocodePlace(place: string) {
-    if (!GOOGLE_KEY) throw new Error("GOOGLE_MAPS_KEY missing");
-    const res = await axios.get("https://maps.googleapis.com/maps/api/geocode/json", {
+export async function geocodePlace(place: string): Promise<{ lat: number; lng: number } | null> {
+    try {
+        if (!GOOGLE_KEY) throw new Error("GOOGLE_MAPS_KEY missing");
+
+        const res = await axios.get("https://maps.googleapis.com/maps/api/geocode/json", {
         params: { address: place, key: GOOGLE_KEY },
-    });
-    const first = res.data.results?.[0];
-    return {
-        lat: first?.geometry?.location?.lat,
-        lng: first?.geometry?.location?.lng,
-    };
+        });
+
+        // Check for API-level issues
+        if (res.data.status !== "OK" || !res.data.results?.length) {
+        console.error("❌ Geocoding failed:", res.data.status, res.data.error_message);
+        return null;
+        }
+
+        const first = res.data.results[0];
+        const { lat, lng } = first.geometry.location;
+        console.log(`✅ Geocoded "${place}" → lat: ${lat}, lng: ${lng}`);
+        return { lat, lng };
+    } catch (err: any) {
+        console.error("❌ geocodePlace() error:", err.message);
+        return null;
+    }
 }
+
 
 export async function fetchPlaces(lat: number, lon: number, interests: string[] = [], limit = 30): Promise<POI[]> {
     // TRY Google Places Nearby Search (Places API v1 uses different endpoint; we'll use Places Web Service)

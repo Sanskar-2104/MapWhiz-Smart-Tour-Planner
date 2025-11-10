@@ -17,7 +17,7 @@ export async function PUT(req: Request, { params }: { params: { publicId: string
 
     const existing = await prisma.trip.findUnique({ where: { publicId: params.publicId } });
     if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
-    if (existing.ownerId !== user.id) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    if (existing.userId !== user.id) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
     const body = await req.json();
 
@@ -63,7 +63,7 @@ export async function DELETE(req: Request, { params }: { params: { publicId: str
 
     const trip = await prisma.trip.findUnique({ where: { publicId: params.publicId } });
     if (!trip) return NextResponse.json({ error: "Not found" }, { status: 404 });
-    if (trip.ownerId !== user.id) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    if (trip.userId !== user.id) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
     await prisma.trip.delete({ where: { publicId: params.publicId } });
     return NextResponse.json({ message: "Deleted" });

@@ -55,9 +55,9 @@ export async function getUserFromReq(req: NextRequest | Request) {
         let token: string | undefined
 
         // 1️⃣ Try cookies (NextRequest supports .cookies.get)
-        // @ts-ignore — works in both environments*/
+        // @ts-expect-error — works in both environments*/
         if (req.cookies?.get) {
-        // @ts-ignore
+        // @ts-expect-error
         token = req.cookies.get('token')?.value
         } else {
         // Fallback for plain Request objects
@@ -65,25 +65,30 @@ export async function getUserFromReq(req: NextRequest | Request) {
         token = cookieHeader?.split(';').find(c => c.trim().startsWith('token='))?.split('=')[1]
         }
 
-        // 2️⃣ Try Authorization header (e.g. "Bearer <token>")
-        if (!token) {
-        const authHeader = req.headers.get('authorization')
-        if (authHeader?.startsWith('Bearer ')) {
-            token = authHeader.substring(7)
-        }
-        }
+        // // 2️⃣ Try Authorization header (e.g. "Bearer <token>")
+        // if (!req.token) {
+        // const authHeader = req.headers.get('authorization')
+        // if (authHeader?.startsWith('Bearer ')) {
+        //     token = authHeader.substring(7)
+        // }
+        // }
 
         if (!token) return null
 
         // 3️⃣ Verify JWT
         const payload = verifyToken(token)
-        if (!payload || !payload.userId) return null
+        if (!payload || !payload.id) {
+            console.warn('Invalid token payload')
+            return null
+        }
 
         // 4️⃣ Fetch user from DB
         const user = await prisma.user.findUnique({
-        where: { id: payload.userId },
+        where: { id: payload.id },
         select: { id: true, email: true, name: true },
         })
+
+        console.log('Authenticated user:', user)
 
         return user
     } catch (err) {

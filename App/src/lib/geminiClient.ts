@@ -1,7 +1,12 @@
-import GenAI from "@google/genai";
+// src/lib/geminiClient.ts
+import { GoogleGenAI } from "@google/genai";
 
-const client = new GenAI.Client({
-  apiKey: process.env.GEMINI_API_KEY, // if using API key; omit for ADC
+// Initialize client
+export const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY!,
 });
 
-export default client;
+
+// or "gemini-2.5-pro" if you need deeper reasoning
+
+
