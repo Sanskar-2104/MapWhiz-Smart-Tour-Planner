@@ -529,10 +529,11 @@ const TripBuilder = () => {
                       <ToggleGroupItem
                         key={i}
                         value={i}
-                        className="rounded-full px-4"
+                        className={styles.interestItem}
                       >
                         {i}
                       </ToggleGroupItem>
+
                     ))}
                   </ToggleGroup>
                 </div>
@@ -542,15 +543,16 @@ const TripBuilder = () => {
                   <div className="flex items-center justify-between">
                     <Label>Budget</Label>
                     <span className="text-sm text-muted-foreground">
-                      ${budget[0]}
+                      ₹{budget[0]}
                     </span>
                   </div>
                   <Slider
                     value={budget}
-                    onValueChange={setBudget}
                     min={200}
                     max={5000}
                     step={50}
+                    onValueChange={(value) => setBudget(value)}
+                    className={styles.sliderWrapper}
                   />
                 </div>
 

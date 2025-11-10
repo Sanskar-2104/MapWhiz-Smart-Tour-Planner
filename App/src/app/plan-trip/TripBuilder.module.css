@@ -197,6 +197,85 @@
   gap: 1.5rem;
 }
 
+/* Wrapper ensures we can reach into the slider’s internal structure */
+.sliderWrapper [data-slot="slider-track"] {
+  background: #ddd;
+  height: 6px;
+  border-radius: 8px;
+}
+
+.sliderWrapper [data-slot="slider-range"] {
+  background: #3b82f6;
+}
+
+.sliderWrapper [data-slot="slider-thumb"] {
+  background: white;
+  border: 2px solid #3b82f6;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+
+/* Slider wrapper so we can target the Radix parts */
+.sliderWrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Track (the long bar) */
+.sliderWrapper [data-slot="slider-track"] {
+  height: 6px;
+  background: #595858; /* faint grey for unfilled part */
+  border-radius: 999px;
+}
+
+/* Filled part */
+.sliderWrapper [data-slot="slider-range"] {
+  background: white; /* white filled bar */
+}
+
+/* Thumb (the circle) */
+.sliderWrapper [data-slot="slider-thumb"] {
+  width: 22px;          /* bigger circle */
+  height: 22px;
+  background: black;     /* black center */
+  border: 3px solid white; /* white border */
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0,0,0,0.3);
+}
+
+
+
+/* Base button style */
+.interestItem {
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  background: transparent;
+  color: var(--foreground);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Selected */
+.interestItem[data-state="on"] {
+  background: rgb(45, 45, 45);         /* selected background */
+  color: white;              /* white text */
+  border-color: white;       /* crisp border */
+}
+
+/* Not selected */
+.interestItem[data-state="off"] {
+  background: transparent;
+  color: var(--foreground);
+  opacity: 0.8;
+}
+
+/* Hover */
+.interestItem:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
 
 
 
