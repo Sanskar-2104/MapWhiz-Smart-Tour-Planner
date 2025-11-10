@@ -27,6 +27,7 @@ export async function geocodePlace(place: string): Promise<{ lat: number; lng: n
         }
 
         const first = res.data.results[0];
+        console.log(first);
         const { lat, lng } = first.geometry.location;
         console.log(`✅ Geocoded "${place}" → lat: ${lat}, lng: ${lng}`);
         return { lat, lng };
@@ -37,7 +38,7 @@ export async function geocodePlace(place: string): Promise<{ lat: number; lng: n
 }
 
 
-export async function fetchPlaces(lat: number, lon: number, interests: string[] = [], limit = 30): Promise<POI[]> {
+export async function fetchPlaces(lat: number, lon: number, interests: string[] = [],limit =40 ): Promise<POI[]> {
     // TRY Google Places Nearby Search (Places API v1 uses different endpoint; we'll use Places Web Service)
     try {
         if (!GOOGLE_KEY) throw new Error("GOOGLE_MAPS_KEY missing");

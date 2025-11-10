@@ -116,28 +116,60 @@ export async function enrichPOIsWithGemini(pois: POI[], destination: string, day
     //     console.error("enrichPOIsWithGemini error:", err);
     //     throw err;
     // }
-    const prompt = `
-        You are a travel planner.
-        Given these POIs for ${destination}, build a ${daysHint ?? "day-by-day"} itinerary.
-        Return only valid JSON following the provided schema.
+    // const prompt =
+    //     // You are a travel planner.
+    //     // Given these POIs for ${destination}, build a ${daysHint ?? "day-by-day"} itinerary.
+    //     // Return only valid JSON following the provided schema.
 
-        POIs:
-        ${JSON.stringify(pois.slice(0, 30))}
-        `;
+    //     // POIs:
+    //     // ${JSON.stringify(pois.slice(0, 30))}
+    //     'You are a travel assistant. Given a list of verified POIs (name, lat, lng), produce a ${daysHint ?? "day-by-day"} itinerary for ${destination}. Return JSON with top-level "days": [{ "date": "YYYY-MM-DD" (optional), "notes": "...", "places": [{name, description, lat, lng, startTime (optional), endTime (optional)}]}]. Use the provided POI list. If lat/lng is missing for a POI, set it to null. Return JSON only';
+    
+    const prompt = `
+You are a travel planner. Given these POIs (name, lat, lng) for ${destination},
+generate a ${daysHint ?? "day-by-day"} itinerary.
+Return ONLY valid JSON with the structure:
+{
+  "days": [
+    {
+      "date": "YYYY-MM-DD",
+      "notes": "string",
+      "places": [
+        {"name": "string", "description": "string", "lat": number, "lng": number,
+         "startTime": "string", "endTime": "string"}
+      ]
+    }
+  ]
+}
+`;
 
     try {
         const response = await ai.models.generateContent({
         model: "gemini-2.5-pro",
         contents: prompt,
         config: {
-            responseMimeType: "application/json",
-            responseJsonSchema: zodToJsonSchema(itinerarySchema),
+            responseMimeType: "application/json"
         },
         });
 
-        const text = response.text;                    // SDK guarantees JSON here
-        const parsed = JSON.parse(text);
-        return itinerarySchema.parse(parsed);          // Zod validates and types it
+        // const text = response.text;
+        // console.log(text); // SDK guarantees JSON here
+        // const parsed = JSON.parse(text);
+        // return itinerarySchema.parse(parsed);        |  // Zod validates and types it
+
+        const text = response.text;
+        console.log("Gemini response text:", text);
+
+    // ✅ parse + validate locally
+    const parsed = JSON.parse(text);
+    const validated = itinerarySchema.safeParse(parsed);
+
+    if (!validated.success) {
+      console.warn("⚠️ Gemini output invalid, using fallback plan");
+      return { days: [] };
+    }
+
+    return validated.data;
     } catch (err) {
         console.error("Gemini itinerary error:", err);
         return { days: [] };                           // Safe fallback

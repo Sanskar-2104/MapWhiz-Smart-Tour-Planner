@@ -76,11 +76,14 @@ export async function POST(req: Request) {
 
     // Call AI planner to get day-wise plan
     try {
+        console.log("Generating itinerary...");
         const dayPlans = await generateItinerary({ destination, startDate, endDate, interests, budget });
+        console.log("Itinerary generated:", dayPlans);
 
         // Save DayPlans + Attraction
-        for (let i = 0; i < dayPlans.length; i++) {
-        const day = dayPlans[i];
+        for (let i = 0; i < dayPlans.days.length; i++) {
+            const day = dayPlans.days[i];
+            console.log(`Saving day ${i + 1} with ${day.places.length} places`);
         const createdDay = await prisma.dailyPlan.create({
             data: {
             tripId: trip.id,

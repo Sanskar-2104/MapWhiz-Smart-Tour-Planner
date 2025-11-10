@@ -2,7 +2,6 @@
 // export async function generateTripPlan(destination: string, startDate: string, endDate: string, interests: string[]) {
 //   // (Pseudo-Logic or AI Call)
 //   // Here you can call Gemini/OpenAI API or use your own place-suggestion logic.
-
 import { enrichPOIsWithGemini } from "./geminiTripHelper";
 import { fetchPlaces, geocodePlace } from "./placesProvider";
 import prisma from "./prisma";
@@ -37,27 +36,34 @@ export async function generateItinerary(input: PlannerInput) {
 
     // Example simple stub (replace with real LLM call)
 
-    const { destination, startDate, endDate, interests = [],budget , days } = input;
+    const { destination, startDate, endDate, interests = [], budget } = input;
+    console.log("generateItinerary called with:", input);
 
-  // check cache first
-    const cached = await prisma.cityCache.findUnique({ where: { destination } });
-    if (cached) {
-        try {
-        const parsed = JSON.parse(cached.data);
-        return parsed;
-        } catch {
-        // continue to regenerate
-        }
-    }
+//   check cache first
+    // const cached = await prisma.cityCache.findUnique({ where: { destination } });
+    // if (cached) {
+    //     try {
+    //     const parsed = JSON.parse(cached.data);
+    //     return parsed;
+    //     } catch {
+    //     // continue to regenerate
+    //     }
+    // }
 
     // 1) geocode
+    const days = Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24)) + 1;
+    console.log(`Generating itinerary for ${destination} from ${startDate} to ${endDate} (${days} days) with interests:`, interests);
     const geo = await geocodePlace(destination);
+    console.log("Geocoded destination:", geo);
+
     if (!geo?.lat || !geo?.lng) {
         throw new Error("Unable to geocode destination");
     }
 
     // 2) fetch POIs
     const pois = await fetchPlaces(geo.lat, geo.lng, interests, 40);
+
+    console.log(`Fetched ${pois.length} POIs for ${destination}`);
 
     // 3) enrich with Gemini
     const enriched = await enrichPOIsWithGemini(pois, destination, days ?? null);
