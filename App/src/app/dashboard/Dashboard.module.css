@@ -1,0 +1,72 @@
+.glass-effect {
+  backdrop-filter: blur(18px);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hover-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.travel-transition {
+  transition: all 0.3s ease;
+}
+
+.travel-gradient-primary {
+  background: linear-gradient(135deg, #4f46e5, #a855f7);
+}
+
+.travel-gradient-warm {
+  background: linear-gradient(135deg, #ff7a18, #ffca28);
+}
+
+.travel-glass {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Make section headings pure white */
+.section-title {
+  color: #ffffff;
+}
+
+/* Make tabs (All, Popular, Trending) white when inactive */
+.tab-text {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.tab-active {
+  color: #31aedc;
+  font-weight: 600;
+}
+
+/* General bright button text for dark backgrounds */
+.btn-light-text {
+  color: #ffffff !important;
+}
+
+/* Rating button style */
+.rating-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff !important;
+}
+
+/* Rebook button style */
+.rebook-btn {
+  background: linear-gradient(135deg, #6a5cff, #a974ff);
+  color: #ffffff !important;
+}
+
+/* Explore button style (curated/explore section) */
+.explore-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff !important;
+}
