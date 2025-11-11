@@ -862,3 +862,226 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+
+
+
+// 'use client';
+
+// import styles from "./Dashboard.module.css";
+// import {
+//   Search,
+//   Calendar,
+//   MapPin,
+//   Star,
+//   Bell,
+//   ChevronLeft,
+//   ChevronRight,
+//   Plane,
+//   Heart,
+// } from 'lucide-react';
+// import { Button } from '@/components/ui/button';
+// import { Card } from '@/components/ui/card';
+// import { useState } from 'react';
+
+// const Dashboard = () => {
+//   const [activeTab, setActiveTab] = useState('all');
+//   const [selectedDate, setSelectedDate] = useState(18);
+
+//   const daysInMonth = Array.from({ length: 31 }, (_, i) => ({
+//     day: i + 1,
+//     active: i === 17 || i === 18,
+//   }));
+
+//   const tripPlans = [
+//     {
+//       id: 1,
+//       title: "Nha Trang (Vietnam)",
+//       rating: 4.9,
+//       image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=500&fit=crop",
+//       description: "Nha Trang has this intoxicating beauty that's a famous tourist center.",
+//     },
+//     {
+//       id: 2,
+//       title: "Paris (France)",
+//       rating: 4.8,
+//       image: "https://images.unsplash.com/photo-1502602898536-47ad22581b52?w=800&h=500&fit=crop",
+//       description: "Paris, the city of lights with iconic landmarks and romantic atmosphere.",
+//     },
+//     {
+//       id: 3,
+//       title: "Bangkok (Thailand)",
+//       rating: 4.6,
+//       image: "https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=800&h=500&fit=crop",
+//       description: "Bangkok's vibrant street life and magnificent temples await you.",
+//     },
+//   ];
+
+//   const doneTrips = [
+//     { id: 1, title: "Da Lat (Vietnam)", dates: "06 Jan - 10 Jan (2022)", gradient: "from-emerald-400 to-cyan-500" },
+//     { id: 2, title: "Berlin (Germany)", dates: "04 Jan - 10 Jan (2022)", gradient: "from-amber-400 to-orange-500" },
+//     { id: 3, title: "New York (USA)", dates: "02 Jan - 05 Jan (2022)", gradient: "from-violet-400 to-purple-500" },
+//   ];
+
+//   return (
+//     <div className={`${styles["dashboard-bg"]} min-h-screen text-white relative`}>
+//       {/* Floating Glow Background */}
+//       <div className={styles["bg-glow"]}></div>
+
+//       {/* Header */}
+//       <header className={`${styles["glass-effect"]} ${styles["header"]}`}>
+//         <div>
+//           <h1 className="text-3xl font-extrabold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-transparent">
+//             Hello, Explorer 🌍
+//           </h1>
+//           <p className="text-sm text-white/70">Plan. Explore. Relive your adventures.</p>
+//         </div>
+
+//         <div className="flex items-center gap-6">
+//           <div className={styles["search-bar"]}>
+//             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-white/60" />
+//             <input type="text" placeholder="Search destinations..." />
+//           </div>
+
+//           <Button variant="ghost" size="icon" className={styles["notif-btn"]}>
+//             <Bell className="h-5 w-5" />
+//             <span className={styles["notif-dot"]}></span>
+//           </Button>
+
+//           <div className={styles["avatar-ring"]}>
+//             <img
+//               src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop"
+//               className="rounded-full w-full h-full object-cover"
+//             />
+//           </div>
+//         </div>
+//       </header>
+
+//       {/* Body */}
+//       <main className="p-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
+//         {/* Main content */}
+//         <div className="lg:col-span-3 space-y-10">
+
+//           {/* Upcoming Adventures */}
+//           <section>
+//             <div className="flex items-center justify-between mb-6">
+//               <h2 className={styles["section-title"]}>Upcoming Adventures</h2>
+//               <Button variant="outline" size="sm" className={styles["button-glow"]}>
+//                 <Plane className="h-4 w-4 mr-2" /> Plan New Trip
+//               </Button>
+//             </div>
+
+//             <Card className={`${styles["glass-effect"]} overflow-hidden group`}>
+//               <div className="relative h-64 md:h-80">
+//                 <img
+//                   src="https://images.unsplash.com/photo-1554797589-7241bb691973?w=800&h=400&fit=crop"
+//                   className={`${styles["hero-img"]}`}
+//                 />
+//                 <div className={styles["hero-gradient"]}></div>
+
+//                 <div className="absolute bottom-6 left-6">
+//                   <h3 className="text-2xl font-bold">Cherry Blossom Seoul Adventure</h3>
+//                   <p className="text-white/70 mb-3">23 Mar - 28 Mar • Myeongdong, Seoul</p>
+//                   <Button className={styles["button-primary"]}>View Details</Button>
+//                 </div>
+//               </div>
+//             </Card>
+//           </section>
+
+//           {/* Curated Section */}
+//           <section>
+//             <div className="flex items-center justify-between mb-6">
+//               <h2 className={styles["section-title"]}>Curated For You</h2>
+//               <div className="flex gap-2">
+//                 {["all", "popular", "trending"].map(tab => (
+//                   <Button
+//                     key={tab}
+//                     variant={activeTab === tab ? "travel" : "travel-glass"}
+//                     onClick={() => setActiveTab(tab)}
+//                     className={`${activeTab === tab ? styles["tab-active"] : styles["tab-inactive"]}`}
+//                   >
+//                     {tab.toUpperCase()}
+//                   </Button>
+//                 ))}
+//               </div>
+//             </div>
+
+//             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+//               {tripPlans.map(trip => (
+//                 <Card key={trip.id} className={`${styles["trip-card"]}`}>
+//                   <div className="relative overflow-hidden h-48">
+//                     <img src={trip.image} className={`${styles["trip-image"]}`} />
+//                     <div className={styles["trip-overlay"]}></div>
+//                     <Heart className={styles["trip-heart"]} />
+//                   </div>
+//                   <div className="p-4">
+//                     <h3 className="font-bold text-lg">{trip.title}</h3>
+//                     <p className="text-sm text-white/70 mb-3">{trip.description}</p>
+//                     <div className="flex justify-between items-center">
+//                       <span className="flex items-center gap-1 text-amber-400">
+//                         <Star className="h-4 w-4 fill-amber-400" /> {trip.rating}
+//                       </span>
+//                       <Button size="sm" variant="outline" className={styles["button-glow"]}>
+//                         Explore
+//                       </Button>
+//                     </div>
+//                   </div>
+//                 </Card>
+//               ))}
+//             </div>
+//           </section>
+//         </div>
+
+//         {/* Sidebar */}
+//         <aside className="space-y-8">
+//           <Card className={`${styles["glass-effect"]} p-6`}>
+//             <div className="flex justify-between items-center mb-6">
+//               <h3 className="font-bold">Travel Calendar</h3>
+//               <div className="flex gap-2">
+//                 <Button variant="ghost" size="icon"><ChevronLeft className="h-4 w-4" /></Button>
+//                 <span className="text-sm">MAR 2022</span>
+//                 <Button variant="ghost" size="icon"><ChevronRight className="h-4 w-4" /></Button>
+//               </div>
+//             </div>
+
+//             <div className="grid grid-cols-7 gap-1">
+//               {daysInMonth.map((day, i) => (
+//                 <button
+//                   key={i}
+//                   onClick={() => setSelectedDate(day.day)}
+//                   className={`${styles["calendar-day"]} ${
+//                     day.active ? styles["calendar-active"] : styles["calendar-inactive"]
+//                   }`}
+//                 >
+//                   {day.day}
+//                 </button>
+//               ))}
+//             </div>
+//           </Card>
+
+//           <Card className={`${styles["glass-effect"]} p-6`}>
+//             <h3 className="font-bold mb-4">Recent Adventures</h3>
+//             <div className="space-y-4">
+//               {doneTrips.map(trip => (
+//                 <div key={trip.id} className={`${styles["recent-trip"]}`}>
+//                   <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${trip.gradient} flex items-center justify-center`}>
+//                     <MapPin className="h-5 w-5 text-white" />
+//                   </div>
+//                   <div>
+//                     <div className="font-semibold text-sm">{trip.title}</div>
+//                     <div className="text-xs text-white/60">{trip.dates}</div>
+//                   </div>
+//                   <Button size="sm" variant="outline" className={styles["button-glow"]}>
+//                     Rebook
+//                   </Button>
+//                 </div>
+//               ))}
+//             </div>
+//           </Card>
+//         </aside>
+//       </main>
+//     </div>
+//   );
+// };
+
+// export default Dashboard;
