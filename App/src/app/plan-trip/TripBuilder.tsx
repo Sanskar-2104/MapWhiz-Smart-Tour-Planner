@@ -592,7 +592,7 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useState } from "react";
-import ItineraryViewer, { SAMPLE_TRIP } from "@/components/ItineraryViewer"; // ✅ Import viewer
+import ItineraryViewer, { SAMPLE_TRIP } from "./IternaryGenerator"; // ✅ Import viewer
 
 const interests = ["History", "Nature", "Food", "Art", "Shopping", "Nightlife"];
 
