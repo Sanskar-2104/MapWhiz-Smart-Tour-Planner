@@ -643,6 +643,12 @@ const handleGenerate = async () => {
 
     const newTrip = await res.json();
     setGeneratedTrip(newTrip);
+
+    try {
+        sessionStorage.setItem("generatedTrip", JSON.stringify(newTrip));
+      } catch (e) {
+        console.warn("Failed to save generatedTrip to sessionStorage", e);
+      }
   } catch (err: any) {
     console.error("generate error", err);
     setErrorMsg(err?.message || "Something went wrong");
