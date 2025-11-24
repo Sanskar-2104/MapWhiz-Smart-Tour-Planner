@@ -198,6 +198,22 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+
+  --bg-1: #070717;
+  --bg-2: #0b0f21;
+  --card-bg: rgba(18,20,34,0.68);
+  --card-border: rgba(255,255,255,0.03);
+  --muted: #8b97b2;
+  --text: #e6eef9;
+  --accent-1: #6fb8ff;
+  --accent-2: #9a6bff;
+  --gold: #f3a84f;
+  --glass-blur: 12px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --shadow-card: 0 8px 30px rgba(4,8,23,0.6);
+  --glow-primary: 0 0 38px rgba(107,155,255,0.14);
+
 }
 
 .dark {

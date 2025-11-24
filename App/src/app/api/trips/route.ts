@@ -60,12 +60,12 @@ export async function POST(req: Request) {
     if (!user) return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 });
 
     const body = await req.json();
-    const { title, destination, startDate, endDate, interests, budget } = body;
+    const {  destination, startDate, endDate, interests, budget } = body;
 
     const trip = await prisma.trip.create({
         data: {
-        userId: user.id,
-        title,
+            userId: user.id,
+            title: `Trip to ${destination}`,
         destination,
         startDate: new Date(startDate),
         endDate: new Date(endDate),
@@ -84,7 +84,7 @@ export async function POST(req: Request) {
         for (let i = 0; i < dayPlans.days.length; i++) {
             const day = dayPlans.days[i];
             console.log(`Saving day ${i + 1} with ${day.places.length} places`);
-        const createdDay = await prisma.dailyPlan.create({
+        await prisma.dailyPlan.create({
             data: {
             tripId: trip.id,
             dayIndex: i + 1,

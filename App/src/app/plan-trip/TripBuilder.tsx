@@ -593,6 +593,7 @@ import { Slider } from "@/components/ui/slider";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useState } from "react";
 import ItineraryViewer, { SAMPLE_TRIP } from "./IternaryGenerator"; // ✅ Import viewer
+import { start } from "repl";
 
 const interests = ["History", "Nature", "Food", "Art", "Shopping", "Nightlife"];
 
@@ -602,20 +603,53 @@ const TripBuilder = () => {
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [budget, setBudget] = useState<number[]>([1200]);
   const [generatedTrip, setGeneratedTrip] = useState<any | null>(null); // ✅ holds generated itinerary
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const handleGenerate = () => {
-    // For now, we’ll mock data using SAMPLE_TRIP from ItineraryViewer
-    // Later you can call your API or AI itinerary generator here
-    const newTrip = {
-      ...SAMPLE_TRIP,
-      destination: destination || "Unknown City",
-      budget: budget[0],
+const handleGenerate = async () => {
+  setErrorMsg(null);
+
+  // Basic validation
+  if (!destination) {
+    setErrorMsg("Please select a destination.");
+    return;
+  }
+  if (!dates || !dates?.from || !dates?.to) {
+    setErrorMsg("Please select travel dates.");
+    return;
+  }
+
+  setIsGenerating(true);
+
+  try {
+    const body = {
+      destination,
+      startDate: dates.from,
+      endDate: dates.to,
       interests: selectedInterests,
-      dates,
+      budget: budget[0],
     };
-    setGeneratedTrip(newTrip);
-  };
 
+    const res = await fetch("/api/trips", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || "Failed to generate itinerary");
+    }
+
+    const newTrip = await res.json();
+    setGeneratedTrip(newTrip);
+  } catch (err: any) {
+    console.error("generate error", err);
+    setErrorMsg(err?.message || "Something went wrong");
+  } finally {
+    setIsGenerating(false);
+  }
+};
   return (
     <div className={`relative min-h-screen text-foreground ${styles.tripBuilder}`}>
       <div className="absolute inset-0 z-0">
@@ -707,9 +741,14 @@ const TripBuilder = () => {
                         size="lg"
                         className={`w-full ${styles.bgGradientAccent}`}
                         onClick={handleGenerate}
+                        disabled={isGenerating}
                       >
-                        Generate Itinerary
+                      {isGenerating ? "Generating..." : "Generate Itinerary"}
                       </Button>
+
+                      {errorMsg && (
+                        <p className="mt-2 text-sm text-red-500 text-center">{errorMsg}</p>
+                      )}
                     </div>
                   </div>
                 </div>
