@@ -268,6 +268,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { TripHeader } from "@/components/TripHeader";
 import styles from "./ItineraryGenerator.module.css";
+import { Sparkles, CalendarDays} from "lucide-react";
 
 export const SAMPLE_TRIP = {
   publicId: "sample-trip",
@@ -432,10 +433,16 @@ const ItineraryGenerator = () => {
           <div className={styles.mainContent}>
             <aside className={styles.sidebar}>
               <div className={styles.sideOverview}>
-                <div className={styles.sideTitle}>
+                {/* <div className={styles.sideTitle}>
                   <span>📅</span>
                   <span style={{ marginLeft: 6 }}>Trip Overview</span>
+                </div> */}
+
+                <div className={styles.sideTitle}>
+                  <CalendarDays size={18} strokeWidth={2} />
+                  <span style={{ marginLeft: 6 }}>Trip Overview</span>
                 </div>
+
 
                 <div className={styles.daysList}>
                   {tripDays.map((d: any) => {
@@ -478,7 +485,9 @@ const ItineraryGenerator = () => {
                 <>
                   <div className={styles.dayHeaderCard}>
                     <div className={styles.dayHeaderRow}>
-                      <div className={styles.dayIcon}>✨</div>
+                      <div className={styles.dayIcon}>
+                        <Sparkles size={20} strokeWidth={2} />
+                      </div>
                       <div>
                         <div className={styles.dayTitle}>Day {currentDay.dayIndex}</div>
                         <div className={styles.dayDate}>
