@@ -39,12 +39,75 @@
 }
 
 /* top header area wrapper (TripHeader component area) */
-.headerArea {
+/* .headerArea {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+} */
+
+/* === Header visibility / contrast fixes ===
+   Add these near the end of the module file.
+   These selectors are intentionally broad so they work whether
+   your TripHeader component uses <h1>, <h2>, or custom class names.
+*/
+.headerArea {
+  /* keep it above subtle background image and main card */
+  position: relative;
+  z-index: 12; /* > contentWrapper (5) and backgroundEffect (0) */
+  color: var(--text); /* default color for header text */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* Common heading tags inside headerArea */
+.headerArea h1,
+.headerArea h2,
+.headerArea h3,
+.headerArea .tripTitle,
+.headerArea .title,
+.headerArea .trip-header-title {
+  color: var(--text) !important;
+  font-weight: 700;
+  line-height: 1.05;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6), 0 2px 6px rgba(0,0,0,0.35);
+  /* Optional thin stroke / outline for extra contrast on noisy backgrounds */
+  -webkit-text-stroke: 0.2px rgba(0,0,0,0.28);
+}
+
+/* Subtitle / smaller metadata */
+.headerArea p,
+.headerArea small,
+.headerArea .muted {
+  color: var(--muted) !important;
+  text-shadow: none;
+}
+
+/* If TripHeader uses an inline badge or pill, ensure it remains readable */
+.headerArea .badge,
+.headerArea .destination {
+  color: var(--text) !important;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 6px 10px;
+  border-radius: 10px;
+}
+
+/* Defensive: if any child set blend-mode that hides text on dark background */
+.headerArea * {
+  mix-blend-mode: normal !important;
+}
+
+/* Narrow-screen tweak if header wraps badly */
+@media (max-width: 980px) {
+  .headerArea h1, .headerArea h2 {
+    font-size: 1.15rem;
+  }
+}
+
+
+
+
 
 /* big rounded main card that contains the page content */
 .mainCard {
@@ -126,14 +189,68 @@
 }
 
 /* small excerpt/muted text */
-.dayExcerpt {
+/* .dayExcerpt {
   font-size: 13px;
   color: var(--muted);
   line-height:1.35;
   max-height: 42px;
   overflow: hidden;
   text-overflow: ellipsis;
+} */
+
+
+
+/* --------------------------
+   Day excerpt & sidebar fixes
+   Paste this at the end of ItineraryGenerator.module.css
+   -------------------------- */
+
+/* Allow multi-line excerpts (use a line-clamp for tidy truncation) */
+.dayExcerpt {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+  margin-top: 6px;
+
+  /* Use -webkit-line-clamp to show a fixed number of lines while keeping tidy ellipsis */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; /* show 3 lines by default */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
 }
+
+/* Selected day shows more excerpt lines so user can read more without opening it */
+.selectedCard .dayExcerpt {
+  -webkit-line-clamp: 6; /* show up to 6 lines on selected card */
+}
+
+/* Make sure each day card grows with content and aligns at top */
+/* .dayCard {
+  align-items: flex-start;
+  /* remove any fixed heights, allow content to determine height 
+  min-height: 0;
+} */
+
+/* Keep the days list scrollable so the sidebar doesn't blow out the layout */
+/* .daysList {
+  /* adjust the max-height to work well with your header and paddings 
+  max-height: calc(100vh - 240px);
+  overflow-y: auto;
+  padding-right: 6px; /* avoid clipped scrollbar overlapping text 
+} */
+
+/* Optional: if you prefer to show *all* text instead of clamping, use this instead:
+.dayExcerpt { -webkit-line-clamp: unset; display: block; overflow: visible; } 
+Then remove selectedCard clamp block above.
+*/
+
+
+
+
+
+
 
 /* hovered (not selected) */
 .dayCard:hover {
@@ -199,10 +316,19 @@
   display:flex;
   align-items:center;
   justify-content:center;
-  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  /* background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); */
+  background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%) !important;
   box-shadow: 0 6px 18px rgba(7,9,20,0.5);
   color:var(--accent-1);
 }
+
+
+
+
+
+
+
+
 
 /* day title big */
 .dayTitle {
@@ -252,7 +378,8 @@
   display:flex;
   align-items:center;
   justify-content:center;
-  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  /* background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); */
+  background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%) !important;
   color: #dfe8ff;
   font-weight:700;
   box-shadow: 0 6px 18px rgba(60,80,130,0.08), var(--glow-primary);
