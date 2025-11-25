@@ -108,6 +108,17 @@ export default function LoginForm({ onSignup }: LoginFormProps) {
 
       if (response.token) {
         console.log("✅ Login successful, token:", response.token);
+
+        // Save token
+        sessionStorage.setItem("authToken", response.token);
+
+        // Notify same-tab listeners (storage event doesn't fire in same tab)
+        window.dispatchEvent(new CustomEvent('authChanged', {
+          detail: { isAuthenticated: true }
+        }));
+
+        // redirect (replace or push depending on your UX)
+        window.location.href = '/dashboard'; // or '/'
       }
     } catch (error) {
       console.error("❌ Login failed:", error);

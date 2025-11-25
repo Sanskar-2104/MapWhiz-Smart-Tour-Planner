@@ -733,8 +733,8 @@ const handleGenerate = async () => {
                       </div>
                       <Slider
                         value={budget}
-                        min={200}
-                        max={5000}
+                        min={1000}
+                        max={70000}
                         step={50}
                         onValueChange={(value) => setBudget(value)}
                         className={styles.sliderWrapper}
