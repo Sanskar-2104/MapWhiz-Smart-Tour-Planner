@@ -20,7 +20,7 @@ interface PlaceCardProps {
 
 export const PlaceCard = ({ place, index }: PlaceCardProps) => {
   const handleDirections = () => {
-    const url = `https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}`;
+    const url = `https://www.google.com/maps/search/?api=&query=${place.latitude},${place.longitude}`;
     window.open(url, "_blank");
   };
 

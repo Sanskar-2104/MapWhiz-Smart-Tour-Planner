@@ -219,12 +219,12 @@ export default function MyToursPage() {
           const created = t.createdAt ?? t.updatedAt;
           const timeAgo = created ? `${humanDiff(new Date(), new Date(created))} ago` : 'some time ago';
 
-          // image: try /images/<destination>.jpg or fallback
-          let imageSrc = '/images/placeholder.jpg';
-          if (typeof t.destination === 'string' && t.destination.trim()) {
-            const safe = t.destination.toLowerCase().replace(/\s+/g, '-');
-            imageSrc = `/images/${safe}.jpg`;
-          }
+          let imageSrc = '/default_image.webp'; // your global fallback
+
+// if (typeof t.destination === 'string' && t.destination.trim()) {
+//   const safe = t.destination.toLowerCase().replace(/\s+/g, '-');
+//   imageSrc = `/images/${safe}.jpg`;   // <-- correct final path
+// }
 
           return { id, title, daysLabel, timeAgo, imageSrc, raw: t };
         });
@@ -259,7 +259,7 @@ export default function MyToursPage() {
       <div className="flex justify-center gap-8 mb-14">
         <StatBox number={trips.length.toString()} label="Total Trips" />
         <StatBox number={ totalDaysTraveled.toString() } label="Days Traveled" />
-        <StatBox number="12" label="Countries" />
+        <StatBox number="1" label="Countries" />
       </div>
 
       {loading && <div className="text-center text-gray-400">Loading trips...</div>}

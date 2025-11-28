@@ -35,6 +35,7 @@ model Trip {
   title       String
   days        DailyPlan[]
   user       User        @relation(fields: [userId], references: [id])
+  imageUrl   String?  // NEW: store full CDN URL here
 }
 
 model DailyPlan {

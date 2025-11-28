@@ -552,7 +552,7 @@ const Dashboard = () => {
       country: "France",
       rating: 4.8,
       reviews: 1422,
-      image: "https://images.unsplash.com/photo-1502602898536-47ad22581b52?w=400&h=200&fit=crop",
+      image: "https://plus.unsplash.com/premium_photo-1661919210043-fd847a58522d?w=400&h=200&fit=crop",
       description: "Paris, the city of lights with iconic landmarks and romantic atmosphere.",
       liked: true
     },
